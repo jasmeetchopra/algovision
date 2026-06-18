@@ -7,6 +7,7 @@ import ArrayVisualizer from "./components/ArrayVisualizer";
 import StatsPanel from "./components/StatsPanel";
 
 import { bubbleSort } from "./algorithms/sorting/bubbleSort";
+import { selectionSort } from "./algorithms/sorting/selectionSort";
 
 function generateArray(size) {
   return Array.from(
@@ -23,8 +24,9 @@ const ALGORITHMS = {
   },
 
   selection: {
-    label: "Selection Sort",
-  },
+  fn: selectionSort,
+  label: "Selection Sort",
+},
 
   insertion: {
     label: "Insertion Sort",
@@ -56,7 +58,6 @@ export default function App() {
   if (isRunning) return;
 
   stopRef.current = false;
-
   setIsRunning(true);
 
   setStats({
@@ -70,39 +71,28 @@ export default function App() {
 
   const delay = () =>
     new Promise((res) => {
-      const ms =
-        Math.max(
-          1,
-          300 - speed * 2.9
-        );
-
-      animFrameRef.current =
-        setTimeout(res, ms);
+      const ms = Math.max(1, 300 - speed * 2.9);
+      animFrameRef.current = setTimeout(res, ms);
     });
 
-  const waitIfPaused = () =>
-    Promise.resolve();
+  const waitIfPaused = () => Promise.resolve();
 
-  const startTime =
-    performance.now();
+  const algo = ALGORITHMS[algorithm];
+  const startTime = performance.now();
 
-  await bubbleSort(arr, {
+  await algo.fn(arr, {
     setArray,
     setHighlights,
     setStats,
     delay,
     waitIfPaused,
-    shouldStop: () =>
-      stopRef.current,
+    shouldStop: () => stopRef.current,
   });
 
   if (!stopRef.current) {
-    const elapsed =
-      (
-        (performance.now() -
-          startTime) /
-        1000
-      ).toFixed(2);
+    const elapsed = (
+      (performance.now() - startTime) / 1000
+    ).toFixed(2);
 
     setStats((s) => ({
       ...s,
