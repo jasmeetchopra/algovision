@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback ,useEffect } from "react";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
@@ -61,6 +61,10 @@ merge: {
 },
 };
 
+function nodeId(left, right) {
+  return `${left}-${right}`;
+}
+
 export default function App() {
   const [arraySize, setArraySize] = useState(30);
   const [speed, setSpeed] = useState(50);
@@ -70,6 +74,8 @@ export default function App() {
   const [customInput, setCustomInput] = useState("");
   const [isPaused, setIsPaused] = useState(false);
   const [currentMergeEvent,setCurrentMergeEvent] = useState(null);
+  const [mergeTree, setMergeTree] = useState(new Map());
+  const [mergeCallStack, setMergeCallStack] = useState([]);
 
   const [stats, setStats] = useState({
     comparisons: 0,
@@ -86,12 +92,65 @@ export default function App() {
     generateArray(30)
   );
 
-  const onMergeEvent = useCallback(
-    (evt) => {
-      setCurrentMergeEvent(evt);
-    },
-    []
-  );
+  const onMergeEvent = (evt) => {
+  setCurrentMergeEvent(evt);
+
+  const id =
+    nodeId(evt.left, evt.right);
+
+  switch (evt.type) {
+    case "enter": {
+      setMergeTree((prev) => {
+        const next =
+          new Map(prev);
+
+        next.set(id, {
+          id,
+          left: evt.left,
+          right: evt.right,
+          depth: evt.depth,
+          values:
+            evt.values || [],
+          children: [],
+          state: "active",
+        });
+
+        return next;
+      });
+
+      break;
+    }
+
+    case "base": {
+      setMergeTree((prev) => {
+        const next =
+          new Map(prev);
+
+        const node =
+          next.get(id);
+
+        if (node) {
+          next.set(id, {
+            ...node,
+            state: "base",
+          });
+        }
+
+        return next;
+      });
+
+      break;
+    }
+
+    default:
+      break;
+  }
+};
+  
+  const resetMergeTree = () => {
+  setMergeTree(new Map());
+  setMergeCallStack([]);
+};
 
   const handleStart = async () => {
   if (isRunning) return;
@@ -190,6 +249,8 @@ export default function App() {
 
   const handleGenerate = () => {
     setCurrentMergeEvent(null);
+    resetMergeTree();
+
     stopRef.current = true;
 
     setIsPaused(false);
@@ -213,6 +274,7 @@ export default function App() {
 
   const handleLoadCustomArray = () => {
     setCurrentMergeEvent(null);
+    resetMergeTree();
     const values = customInput
       .split(/[\s,]+/)
       .map(Number)
