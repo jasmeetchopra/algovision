@@ -8,6 +8,7 @@ import StatsPanel from "./components/StatsPanel";
 
 import { bubbleSort } from "./algorithms/sorting/bubbleSort";
 import { selectionSort } from "./algorithms/sorting/selectionSort";
+import { insertionSort } from "./algorithms/sorting/insertionSort";
 
 function generateArray(size) {
   return Array.from(
@@ -29,8 +30,9 @@ const ALGORITHMS = {
 },
 
   insertion: {
-    label: "Insertion Sort",
-  },
+  fn: insertionSort,
+  label: "Insertion Sort",
+},
 };
 
 export default function App() {
