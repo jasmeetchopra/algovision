@@ -4,45 +4,36 @@ export default function ControlPanel({
   arraySize,
   speed,
   onGenerate,
+  onStart,
+  isRunning,
 }) {
   return (
     <div>
-
-      <label>
-        Algorithm
-      </label>
+      <label>Algorithm</label>
 
       <select
         value={algorithm}
-        onChange={(e) =>
-          setAlgorithm(e.target.value)
-        }
+        onChange={(e) => setAlgorithm(e.target.value)}
       >
-        <option value="bubble">
-          Bubble Sort
-        </option>
-
-        <option value="selection">
-          Selection Sort
-        </option>
-
-        <option value="insertion">
-          Insertion Sort
-        </option>
+        <option value="bubble">Bubble Sort</option>
+        <option value="selection">Selection Sort</option>
+        <option value="insertion">Insertion Sort</option>
       </select>
 
-      <p>
-        Array Size: {arraySize}
-      </p>
+      <p>Array Size: {arraySize}</p>
 
-      <p>
-        Speed: {speed}
-      </p>
+      <p>Speed: {speed}</p>
 
       <button onClick={onGenerate}>
         Generate Array
       </button>
 
+      <button
+        onClick={onStart}
+        disabled={isRunning}
+      >
+        Start Sorting
+      </button>
     </div>
   );
 }
