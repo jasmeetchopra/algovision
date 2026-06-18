@@ -20,18 +20,33 @@ function generateArray(size) {
 
 const ALGORITHMS = {
   bubble: {
-    fn: bubbleSort,
-    label: "Bubble Sort",
+  fn: bubbleSort,
+  label: "Bubble Sort",
+  complexity: {
+    time: "O(n²)",
+    space: "O(1)",
+    best: "O(n)",
   },
-
-  selection: {
-  fn: selectionSort,
-  label: "Selection Sort",
 },
 
-  insertion: {
+selection: {
+  fn: selectionSort,
+  label: "Selection Sort",
+  complexity: {
+    time: "O(n²)",
+    space: "O(1)",
+    best: "O(n²)",
+  },
+},
+
+insertion: {
   fn: insertionSort,
   label: "Insertion Sort",
+  complexity: {
+    time: "O(n²)",
+    space: "O(1)",
+    best: "O(n)",
+  },
 },
 };
 
