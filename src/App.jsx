@@ -13,9 +13,23 @@ function generateArray(size) {
   );
 }
 
+
+const ALGORITHMS = {
+  bubble: {
+    label: "Bubble Sort",
+  },
+  selection: {
+    label: "Selection Sort",
+  },
+  insertion: {
+    label: "Insertion Sort",
+  },
+};
+
 export default function App() {
   const [arraySize, setArraySize] = useState(30);
   const [speed, setSpeed] = useState(50);
+  const [algorithm, setAlgorithm] = useState("bubble");
 
   const [array, setArray] = useState(() =>
     generateArray(30)
@@ -27,9 +41,14 @@ export default function App() {
 
   return (
     <div className="app">
-      <Navbar />
+      <Navbar
+        algorithm={algorithm}
+        algoLabel={ALGORITHMS[algorithm].label}
+      />
 
       <ControlPanel
+        algorithm={algorithm}
+        setAlgorithm={setAlgorithm}
         arraySize={arraySize}
         speed={speed}
         onGenerate={handleGenerate}

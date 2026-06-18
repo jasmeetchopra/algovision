@@ -1,7 +1,17 @@
-export default function Navbar() {
+import "./Navbar.css";
+
+export default function Navbar({
+  algoLabel,
+}) {
   return (
-    <header>
+    <header className="navbar">
       <h1>AlgoVision</h1>
+
+      <p>
+        Selected Algorithm:
+        {" "}
+        {algoLabel}
+      </p>
     </header>
   );
 }
