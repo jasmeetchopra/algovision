@@ -1,54 +1,45 @@
-import "./ArrayVisualizer.css";
+import './ArrayVisualizer.css';
 
 const STATE_COLORS = {
-  default: "#3b82f6",
-  comparing: "#f59e0b",
-  swapping: "#ef4444",
-  sorted: "#22c55e",
+  comparing: 'var(--bar-comparing)',
+  swapping:  'var(--bar-swapping)',
+  sorted:    'var(--bar-sorted)',
+  pivot:     'var(--bar-pivot)',
+  default:   'var(--bar-default)',
+  active: 'var(--bar-active)'
 };
 
-export default function ArrayVisualizer({
-  array,
-  highlights = {},
-}) {
-  const showLabels = array.length <= 40;
-
-  const barWidth =
-    array.length <= 20
-      ? 30
-      : array.length <= 40
-      ? 20
-      : 12;
+export default function ArrayVisualizer({ array, highlights }) {
+  const max = Math.max(...array, 1);
 
   return (
-    <div className="array-container">
-      {array.map((value, index) => {
-        const state =
-          highlights[index] || "default";
+    <div className="visualizer-wrapper grid-bg">
+      <div className="visualizer-bars">
+        {array.map((value, i) => {
+          const state = highlights[i] || 'default';
+          const color = STATE_COLORS[state] || STATE_COLORS.default;
+          const heightPct = (value / max) * 100;
+          const isActive = state !== 'default';
+          const showLabel = array.length <= 40;
 
-        return (
-          <div
-            key={index}
-            className="array-item"
-          >
-            <div
-              className="array-bar"
-              style={{
-                height: `${value * 4}px`,
-                width: `${barWidth}px`,
-                backgroundColor:
-                  STATE_COLORS[state],
-              }}
-            />
-
-            {showLabels && (
-              <span className="array-label">
-                {value}
-              </span>
-            )}
-          </div>
-        );
-      })}
+          return (
+            <div key={i} className="bar-column">
+              {showLabel && isActive && (
+                <span className="bar-value">{value}</span>
+              )}
+              <div
+                className={`bar ${state}`}
+                style={{
+                  height: `${heightPct}%`,
+                  background: color,
+                  boxShadow: isActive ? `0 0 10px ${color}60, 0 0 2px ${color}` : 'none',
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+      <div className="visualizer-baseline" />
     </div>
   );
 }

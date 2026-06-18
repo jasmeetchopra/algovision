@@ -9,14 +9,14 @@ import { selectionSort } from "./algorithms/sorting/selectionSort";
 import { insertionSort } from "./algorithms/sorting/insertionSort";
 import { mergeSort } from "./algorithms/sorting/mergeSort";
 import MergeTreeVisualizer from './components/MergeTreeVisualizer';
-
+import { quickSort } from "./algorithms/sorting/quickSort";
 
 const ALGORITHMS = {
   bubble: { fn: bubbleSort, label: 'Bubble Sort', complexity: { time: 'O(n²)', space: 'O(1)', best: 'O(n)' } },
   insertion: { fn: insertionSort, label: 'Insertion Sort', complexity: { time: 'O(n²)', space: 'O(1)', best: 'O(n)' } },
   selection: { fn: selectionSort, label: 'Selection Sort', complexity: { time: 'O(n²)', space: 'O(1)', best: 'O(n²)' } },
   merge: { fn: mergeSort, label: 'Merge Sort', complexity: { time: 'O(n log n)', space: 'O(n)', best: 'O(n log n)' } },
-  
+  quick: { fn: quickSort, label: 'Quick Sort', complexity: { time: 'O(n log n)', space: 'O(log n)', best: 'O(n log n)' } }
 };
 
 function generateArray(size) {
