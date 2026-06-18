@@ -1,7 +1,25 @@
-export default function StatsPanel() {
+export default function StatsPanel({
+  stats,
+}) {
   return (
-    <section>
-      <h2>Statistics</h2>
-    </section>
+    <div>
+      <p>
+        Comparisons:
+        {" "}
+        {stats.comparisons}
+      </p>
+
+      <p>
+        Swaps:
+        {" "}
+        {stats.swaps}
+      </p>
+
+      <p>
+        Time:
+        {" "}
+        {stats.time}s
+      </p>
+    </div>
   );
 }

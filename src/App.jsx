@@ -6,6 +6,8 @@ import ControlPanel from "./components/ControlPanel";
 import ArrayVisualizer from "./components/ArrayVisualizer";
 import StatsPanel from "./components/StatsPanel";
 
+import { bubbleSort } from "./algorithms/sorting/bubbleSort";
+
 function generateArray(size) {
   return Array.from(
     { length: size },
@@ -16,11 +18,14 @@ function generateArray(size) {
 
 const ALGORITHMS = {
   bubble: {
+    fn: bubbleSort,
     label: "Bubble Sort",
   },
+
   selection: {
     label: "Selection Sort",
   },
+
   insertion: {
     label: "Insertion Sort",
   },
@@ -47,9 +52,69 @@ export default function App() {
     generateArray(30)
   );
 
-  const handleStart = () => {
-    setIsRunning(true);
-  };
+  const handleStart = async () => {
+  if (isRunning) return;
+
+  stopRef.current = false;
+
+  setIsRunning(true);
+
+  setStats({
+    comparisons: 0,
+    swaps: 0,
+    time: 0,
+    completed: false,
+  });
+
+  const arr = [...array];
+
+  const delay = () =>
+    new Promise((res) => {
+      const ms =
+        Math.max(
+          1,
+          300 - speed * 2.9
+        );
+
+      animFrameRef.current =
+        setTimeout(res, ms);
+    });
+
+  const waitIfPaused = () =>
+    Promise.resolve();
+
+  const startTime =
+    performance.now();
+
+  await bubbleSort(arr, {
+    setArray,
+    setHighlights,
+    setStats,
+    delay,
+    waitIfPaused,
+    shouldStop: () =>
+      stopRef.current,
+  });
+
+  if (!stopRef.current) {
+    const elapsed =
+      (
+        (performance.now() -
+          startTime) /
+        1000
+      ).toFixed(2);
+
+    setStats((s) => ({
+      ...s,
+      time: elapsed,
+      completed: true,
+    }));
+
+    setHighlights({});
+  }
+
+  setIsRunning(false);
+};
 
   const handleGenerate = () => {
     stopRef.current = true;
