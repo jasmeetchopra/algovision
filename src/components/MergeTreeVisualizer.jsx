@@ -8,10 +8,21 @@ export default function MergeTreeVisualizer({
       <h3>Merge Tree</h3>
 
       {[...mergeTree.values()].map((node) => (
-        <div key={node.id}>
-          Range: {node.left}-{node.right}
-          {" | "}
-          {node.state}
+        <div
+        key={node.id}
+        className={`tree-node ${node.state}`}
+        style={{
+            marginLeft:
+            `${node.depth * 30}px`,
+        }}
+        >
+        <div className="range">
+            {node.left}-{node.right}
+        </div>
+
+        <div className="state">
+            {node.state}
+        </div>
         </div>
       ))}
     </div>
