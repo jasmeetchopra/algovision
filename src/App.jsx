@@ -10,6 +10,7 @@ import { bubbleSort } from "./algorithms/sorting/bubbleSort";
 import { selectionSort } from "./algorithms/sorting/selectionSort";
 import { insertionSort } from "./algorithms/sorting/insertionSort";
 import { mergeSort } from "./algorithms/sorting/mergeSort";
+import MergeTreeVisualizer from "./components/MergeTreeVisualizer";
 
 function generateArray(size) {
   return Array.from(
@@ -331,6 +332,14 @@ export default function App() {
         highlights={highlights}
       />
 
+      {algorithm === "merge" && (
+        <MergeTreeVisualizer
+          mergeTree={mergeTree}
+          mergeCallStack={mergeCallStack}
+          currentEvent={currentMergeEvent}
+        />
+      )}
+    
       <StatsPanel
         stats={stats}
         algoLabel={ALGORITHMS[algorithm].label}
