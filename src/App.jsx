@@ -57,6 +57,7 @@ export default function App() {
   const [highlights, setHighlights] = useState({});
   const [isRunning, setIsRunning] = useState(false);
   const [customInput, setCustomInput] = useState("");
+  const [isPaused, setIsPaused] = useState(false);
 
   const [stats, setStats] = useState({
     comparisons: 0,
@@ -67,6 +68,7 @@ export default function App() {
 
   const stopRef = useRef(false);
   const animFrameRef = useRef(null);
+  const pauseRef = useRef(false);
 
   const [array, setArray] = useState(() =>
     generateArray(30)
@@ -76,7 +78,10 @@ export default function App() {
   if (isRunning) return;
 
   stopRef.current = false;
+  pauseRef.current = false;
+
   setIsRunning(true);
+  setIsPaused(false);
 
   setStats({
     comparisons: 0,
@@ -93,7 +98,24 @@ export default function App() {
       animFrameRef.current = setTimeout(res, ms);
     });
 
-  const waitIfPaused = () => Promise.resolve();
+  const waitIfPaused = () =>
+  new Promise((res) => {
+    const check = () => {
+      if (stopRef.current) {
+        res();
+        return;
+      }
+
+      if (!pauseRef.current) {
+        res();
+        return;
+      }
+
+      setTimeout(check, 50);
+    };
+
+    check();
+  });
 
   const algo = ALGORITHMS[algorithm];
   const startTime = performance.now();
@@ -124,8 +146,29 @@ export default function App() {
   setIsRunning(false);
 };
 
+  const handlePause = () => {
+    if (!isRunning) return;
+
+    pauseRef.current = !pauseRef.current;
+    setIsPaused((p) => !p);
+  };
+
+  const handleStop = () => {
+    stopRef.current = true;
+    pauseRef.current = false;
+
+    clearTimeout(animFrameRef.current);
+
+    setIsRunning(false);
+    setIsPaused(false);
+    setHighlights({});
+  };
+
   const handleGenerate = () => {
     stopRef.current = true;
+
+    setIsPaused(false);
+    pauseRef.current = false;
 
     setIsRunning(false);
     setHighlights({});
@@ -190,6 +233,9 @@ export default function App() {
       customInput={customInput}
       setCustomInput={setCustomInput}
       onLoadCustomArray={handleLoadCustomArray}
+      onPause={handlePause}
+      onStop={handleStop}
+      isPaused={isPaused}
     />
 
       <ArrayVisualizer

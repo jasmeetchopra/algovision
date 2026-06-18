@@ -9,6 +9,9 @@ export default function ControlPanel({
   customInput,
   setCustomInput,
   onLoadCustomArray,
+  onPause,
+    onStop,
+    isPaused,
 }) {
   return (
     <div>
@@ -52,6 +55,21 @@ export default function ControlPanel({
       >
         Start Sorting
       </button>
+
+        <button
+        onClick={onPause}
+        disabled={!isRunning}
+        >
+        {isPaused ? "Resume" : "Pause"}
+        </button>
+
+        <button
+        onClick={onStop}
+        disabled={!isRunning}
+        >
+        Stop
+        </button>
+
     </div>
   );
 }
