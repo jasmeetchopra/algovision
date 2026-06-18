@@ -6,6 +6,9 @@ export default function ControlPanel({
   onGenerate,
   onStart,
   isRunning,
+  customInput,
+  setCustomInput,
+  onLoadCustomArray,
 }) {
   return (
     <div>
@@ -27,6 +30,21 @@ export default function ControlPanel({
       <button onClick={onGenerate}>
         Generate Array
       </button>
+
+      <textarea
+        value={customInput}
+        onChange={(e) =>
+            setCustomInput(e.target.value)
+        }
+        placeholder="10, 5, 7, 2, 9"
+        />
+
+        <button
+        onClick={onLoadCustomArray}
+        disabled={isRunning}
+        >
+        Load Custom Array
+        </button>
 
       <button
         onClick={onStart}

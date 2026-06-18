@@ -56,6 +56,7 @@ export default function App() {
   const [algorithm, setAlgorithm] = useState("bubble");
   const [highlights, setHighlights] = useState({});
   const [isRunning, setIsRunning] = useState(false);
+  const [customInput, setCustomInput] = useState("");
 
   const [stats, setStats] = useState({
     comparisons: 0,
@@ -142,6 +143,35 @@ export default function App() {
     }, 50);
   };
 
+  const handleLoadCustomArray = () => {
+    const values = customInput
+      .split(/[\s,]+/)
+      .map(Number)
+      .filter((v) => !isNaN(v));
+
+    if (values.length === 0) {
+      alert("Enter valid numbers");
+      return;
+    }
+
+    if (values.length > 80) {
+      alert("Maximum 80 elements allowed");
+      return;
+    }
+
+    setArray(values);
+    setArraySize(values.length);
+
+    setHighlights({});
+
+    setStats({
+      comparisons: 0,
+      swaps: 0,
+      time: 0,
+      completed: false,
+    });
+  };
+
   return (
     <div className="app">
       <Navbar
@@ -150,16 +180,17 @@ export default function App() {
       />
 
       <ControlPanel
-        algorithm={algorithm}
-        setAlgorithm={setAlgorithm}
-        arraySize={arraySize}
-        setArraySize={setArraySize}
-        speed={speed}
-        setSpeed={setSpeed}
-        onGenerate={handleGenerate}
-        onStart={handleStart}
-        isRunning={isRunning}
-      />
+      algorithm={algorithm}
+      setAlgorithm={setAlgorithm}
+      arraySize={arraySize}
+      speed={speed}
+      onGenerate={handleGenerate}
+      onStart={handleStart}
+      isRunning={isRunning}
+      customInput={customInput}
+      setCustomInput={setCustomInput}
+      onLoadCustomArray={handleLoadCustomArray}
+    />
 
       <ArrayVisualizer
         array={array}
