@@ -1,32 +1,490 @@
-.merge-tree {
-  margin-top: 2rem;
+/* ============================================================
+   Merge Sort Visualizer — full stylesheet
+   ============================================================ */
+
+.mtv-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  background: radial-gradient(
+      ellipse at top,
+      #0f1729 0%,
+      #060912 70%
+    );
+  border-radius: 14px;
+  overflow: hidden;
+  font-family: "Inter", system-ui, sans-serif;
+  color: #e6edf7;
 }
 
-.tree-node {
+/* ---------- Phase banner ---------- */
+.mtv-phase-banner {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 14px;
+  z-index: 10;
+  pointer-events: none;
+}
+.mtv-phase-step {
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(6px);
+}
+.mtv-phase-divide { color: #5fd4ff; }
+.mtv-phase-conquer { color: #ffb066; }
+
+/* ---------- Scroll container ---------- */
+.mtv-scroll {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  padding: 60px 20px 200px;
+}
+.mtv-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
+.mtv-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.12);
+  border-radius: 4px;
+}
+
+.mtv-canvas {
+  position: relative;
+  margin: 0 auto;
+}
+
+/* ---------- Edges ---------- */
+.mtv-edge-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.mtv-edge {
+  fill: none;
+  stroke: rgba(120, 160, 220, 0.25);
+  stroke-width: 1.6;
+  stroke-dasharray: 4 4;
+  transition: stroke 0.3s, stroke-width 0.3s;
+}
+.mtv-edge-merging {
+  stroke: #ff9a3c;
+  stroke-width: 2.4;
+  stroke-dasharray: none;
+  filter: drop-shadow(0 0 6px rgba(255, 154, 60, 0.6));
+}
+.mtv-edge-merged {
+  stroke: #4ade80;
+  stroke-width: 2;
+  stroke-dasharray: none;
+  opacity: 0.7;
+}
+
+/* ---------- Node base ---------- */
+.mtv-node {
+  position: absolute;
+  border-radius: 10px;
+  padding: 6px 8px;
+  background: rgba(20, 28, 46, 0.85);
+  border: 1.5px solid rgba(120, 160, 220, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s,
+    transform 0.3s,
+    background 0.3s;
+  backdrop-filter: blur(2px);
+}
+
+.mtv-node-header {
   display: flex;
   justify-content: space-between;
+  font-size: 9px;
+  color: rgba(230, 237, 247, 0.55);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.mtv-range { font-weight: 600; }
+.mtv-depth {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
 
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
-
-  border-radius: 12px;
-
-  color: white;
+/* ---------- Chips (the array values) ---------- */
+.mtv-chips {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 3px;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  overflow: hidden;
+}
+.mtv-chip {
+  min-width: 16px;
+  height: 22px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
   font-weight: 600;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e6edf7;
+  animation: chipPop 0.35s ease-out both;
+}
+.mtv-chip-dots {
+  background: transparent;
+  color: rgba(230, 237, 247, 0.4);
+  font-weight: 400;
+}
+@keyframes chipPop {
+  from { transform: scale(0.4); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
 }
 
-.tree-node.active {
-  background: #2563eb;
+/* ---------- State variants ---------- */
+
+/* Splitting (default descent) — cyan */
+.mtv-splitting {
+  border-color: rgba(95, 212, 255, 0.35);
+}
+.mtv-splitting .mtv-chip {
+  background: rgba(95, 212, 255, 0.15);
+  color: #b8ecff;
 }
 
-.tree-node.base {
-  background: #16a34a;
+/* Active — glowing cyan */
+.mtv-active {
+  border-color: #5fd4ff;
+  box-shadow:
+    0 0 0 1px #5fd4ff,
+    0 0 24px rgba(95, 212, 255, 0.55),
+    0 4px 16px rgba(0, 0, 0, 0.5);
+  transform: scale(1.04);
+  z-index: 5;
+}
+.mtv-active .mtv-chip {
+  background: rgba(95, 212, 255, 0.28);
+  color: #ffffff;
 }
 
-.tree-node.merging {
-  background: #ea580c;
+/* Leaf (base case) — lime */
+.mtv-leaf {
+  border-color: #a3e635;
+  background: rgba(34, 50, 30, 0.85);
+}
+.mtv-leaf .mtv-chip {
+  background: rgba(163, 230, 53, 0.25);
+  color: #d9f99d;
 }
 
-.tree-node.done {
-  background: #7c3aed;
+/* Merging — orange */
+.mtv-merging {
+  border-color: #ff9a3c;
+  box-shadow:
+    0 0 0 1px #ff9a3c,
+    0 0 26px rgba(255, 154, 60, 0.6);
+  z-index: 6;
 }
+.mtv-merging .mtv-chip {
+  background: rgba(255, 154, 60, 0.28);
+  color: #ffe1c4;
+  animation:
+    chipPop 0.35s ease-out both,
+    chipShimmer 1.2s ease-in-out infinite;
+}
+@keyframes chipShimmer {
+  0%, 100% { box-shadow: 0 0 0 rgba(255,154,60,0); }
+  50%      { box-shadow: 0 0 8px rgba(255,154,60,0.7); }
+}
+
+/* Merged (done) — green */
+.mtv-merged {
+  border-color: #4ade80;
+  background: rgba(20, 40, 30, 0.85);
+}
+.mtv-merged .mtv-chip {
+  background: rgba(74, 222, 128, 0.22);
+  color: #bbf7d0;
+}
+
+/* ---------- Decorative rings ---------- */
+.mtv-pulse-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 12px;
+  border: 2px solid #5fd4ff;
+  opacity: 0;
+  animation: pulseRing 1.4s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(0.95); opacity: 0.7; }
+  100% { transform: scale(1.25); opacity: 0; }
+}
+
+.mtv-merge-glow {
+  position: absolute;
+  inset: -8px;
+  border-radius: 14px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 154, 60, 0.25),
+    transparent 70%
+  );
+  animation: mergeGlow 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes mergeGlow {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.9; }
+}
+
+/* ---------- Operation panel (bottom-left) ---------- */
+.mtv-op-panel {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  min-width: 280px;
+  max-width: 380px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(15, 23, 41, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 20;
+  transition: border-color 0.3s;
+}
+.mtv-op-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.mtv-op-body {
+  font-size: 13px;
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  color: #e6edf7;
+  line-height: 1.4;
+  word-break: break-all;
+}
+.mtv-op-stats {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mtv-op-active  { border-color: #5fd4ff; }
+.mtv-op-active  .mtv-op-title { color: #5fd4ff; }
+.mtv-op-split   { border-color: #5fd4ff; }
+.mtv-op-split   .mtv-op-title { color: #5fd4ff; }
+.mtv-op-leaf    { border-color: #a3e635; }
+.mtv-op-leaf    .mtv-op-title { color: #a3e635; }
+.mtv-op-merge   { border-color: #ff9a3c; }
+.mtv-op-merge   .mtv-op-title { color: #ff9a3c; }
+.mtv-op-merged  { border-color: #4ade80; }
+.mtv-op-merged  .mtv-op-title { color: #4ade80; }
+
+/* ---------- Legend (top-right) ---------- */
+.mtv-legend {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 10px 12px;
+  background: rgba(15, 23, 41, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  font-size: 11px;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+}
+.mtv-legend-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 6px;
+}
+.mtv-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+  color: rgba(230, 237, 247, 0.85);
+}
+.mtv-legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.mtv-legend-swatch.mtv-splitting { background: rgba(95, 212, 255, 0.4); }
+.mtv-legend-swatch.mtv-active    { background: #5fd4ff; box-shadow: 0 0 8px #5fd4ff; }
+.mtv-legend-swatch.mtv-leaf      { background: #a3e635; }
+.mtv-legend-swatch.mtv-merging   { background: #ff9a3c; box-shadow: 0 0 8px #ff9a3c; }
+.mtv-legend-swatch.mtv-merged    { background: #4ade80; }
+
+/* ---------- Empty state ---------- */
+.mtv-empty {
+  height: 100%;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #0f1729, #060912);
+  border-radius: 14px;
+  color: #e6edf7;
+}
+.mtv-empty-title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(90deg, #5fd4ff, #4ade80, #ff9a3c);
+
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  margin-bottom: 8px;
+}
+.mtv-empty-sub {
+  font-size: 14px;
+  color: rgba(230, 237, 247, 0.6);
+}
+
+/* ------------------------------------------------------------------ */
+/*  Hover Tooltip                                                      */
+/* ------------------------------------------------------------------ */
+
+.mtv-node {
+  /* ensure tooltip can overflow the node box */
+  overflow: visible;
+}
+
+.mtv-tooltip-wrap {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  transform: translateX(-50%) translateY(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+  z-index: 9999;
+}
+
+.mtv-tooltip-wrap.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.mtv-tooltip {
+  min-width: 220px;
+  max-width: 320px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: rgba(20, 24, 36, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  color: #e6e9f2;
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+}
+
+/* little arrow pointing down to the node */
+.mtv-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(20, 24, 36, 0.78);
+}
+
+.mtv-tt-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.mtv-tt-label {
+  color: #8a93a6;
+  font-weight: 500;
+}
+
+.mtv-tt-value {
+  color: #e6e9f2;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.mtv-tt-state {
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mtv-tt-state-splitting { color: #9bb4ff; }
+.mtv-tt-state-active    { color: #ffd166; }
+.mtv-tt-state-leaf      { color: #9ad8ff; }
+.mtv-tt-state-merging   { color: #ff9a3c; }
+.mtv-tt-state-merged    { color: #7ee2a8; }
+
+.mtv-tt-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 8px 0;
+}
+
+.mtv-tt-section-title {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8a93a6;
+  margin-bottom: 4px;
+}
+
+.mtv-tt-array {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11.5px;
+  color: #e6e9f2;
+  word-break: break-word;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
