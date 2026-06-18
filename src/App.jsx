@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
@@ -9,6 +9,7 @@ import StatsPanel from "./components/StatsPanel";
 import { bubbleSort } from "./algorithms/sorting/bubbleSort";
 import { selectionSort } from "./algorithms/sorting/selectionSort";
 import { insertionSort } from "./algorithms/sorting/insertionSort";
+import { mergeSort } from "./algorithms/sorting/mergeSort";
 
 function generateArray(size) {
   return Array.from(
@@ -48,6 +49,16 @@ insertion: {
     best: "O(n)",
   },
 },
+
+merge: {
+  fn: mergeSort,
+  label: "Merge Sort",
+  complexity: {
+    time: "O(n log n)",
+    space: "O(n)",
+    best: "O(n log n)",
+  },
+},
 };
 
 export default function App() {
@@ -58,6 +69,7 @@ export default function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [customInput, setCustomInput] = useState("");
   const [isPaused, setIsPaused] = useState(false);
+  const [currentMergeEvent,setCurrentMergeEvent] = useState(null);
 
   const [stats, setStats] = useState({
     comparisons: 0,
@@ -72,6 +84,13 @@ export default function App() {
 
   const [array, setArray] = useState(() =>
     generateArray(30)
+  );
+
+  const onMergeEvent = useCallback(
+    (evt) => {
+      setCurrentMergeEvent(evt);
+    },
+    []
   );
 
   const handleStart = async () => {
@@ -127,6 +146,11 @@ export default function App() {
     delay,
     waitIfPaused,
     shouldStop: () => stopRef.current,
+
+    onMergeEvent:
+    algorithm === "merge"
+      ? onMergeEvent
+      : undefined,
   });
 
   if (!stopRef.current) {
@@ -165,6 +189,7 @@ export default function App() {
   };
 
   const handleGenerate = () => {
+    setCurrentMergeEvent(null);
     stopRef.current = true;
 
     setIsPaused(false);
@@ -187,6 +212,7 @@ export default function App() {
   };
 
   const handleLoadCustomArray = () => {
+    setCurrentMergeEvent(null);
     const values = customInput
       .split(/[\s,]+/)
       .map(Number)
