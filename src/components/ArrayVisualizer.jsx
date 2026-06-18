@@ -1,7 +1,17 @@
-export default function ArrayVisualizer() {
+export default function ArrayVisualizer({
+  array,
+}) {
   return (
-    <section>
-      <h2>Array Visualizer</h2>
-    </section>
+    <div className="array-container">
+      {array.map((value, index) => (
+        <div
+          key={index}
+          className="array-bar"
+          style={{
+            height: `${value * 4}px`,
+          }}
+        />
+      ))}
+    </div>
   );
 }

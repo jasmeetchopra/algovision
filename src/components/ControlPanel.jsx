@@ -1,7 +1,16 @@
-export default function ControlPanel() {
+export default function ControlPanel({
+  arraySize,
+  speed,
+  onGenerate,
+}) {
   return (
-    <section>
-      <h2>Controls</h2>
-    </section>
+    <div>
+      <p>Array Size: {arraySize}</p>
+      <p>Speed: {speed}</p>
+
+      <button onClick={onGenerate}>
+        Generate Array
+      </button>
+    </div>
   );
 }
