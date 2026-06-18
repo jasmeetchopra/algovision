@@ -169,6 +169,7 @@ export default function App() {
       <StatsPanel
         stats={stats}
         algoLabel={ALGORITHMS[algorithm].label}
+        complexity={ALGORITHMS[algorithm].complexity}
         arraySize={arraySize}
       />
     </div>
