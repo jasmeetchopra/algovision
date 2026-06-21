@@ -16,19 +16,10 @@ export default function Navbar({ algoLabel }) {
       </div>
 
       <div className="navbar-center">
-        <div className="status-badge">
-          <span className="status-dot"></span>
-          <span className="status-text">LIVE</span>
-        </div>
+        
         <span className="nav-algo-label">{algoLabel}</span>
       </div>
 
-      <div className="navbar-links">
-        <a href="#" className="nav-link disabled">Sorting</a>
-        <a href="#" className="nav-link disabled">Searching</a>
-        <a href="#" className="nav-link disabled">Graph</a>
-        <a href="#" className="nav-link disabled">Tree</a>
-      </div>
     </nav>
   );
 }

@@ -5,7 +5,7 @@ const ALGO_OPTIONS = [
   { value: 'insertion', label: 'Insertion Sort' },
   { value: 'selection', label: 'Selection Sort' },
   { value: 'merge', label: 'Merge Sort' },
-  { value: 'quick', label: 'Quick Sort' }
+
 ];
 
 export default function ControlPanel({
@@ -21,12 +21,10 @@ export default function ControlPanel({
 }) {
   return (
     <aside className="control-panel">
-      <div className="panel-header">
-        <span className="panel-label">// controls</span>
-      </div>
+      
 
       <div className="panel-section">
-        <label className="field-label">Algorithm</label>
+        <label className="field-label">Select a Sorting Algorithm : </label>
         <div className="algo-list">
           {ALGO_OPTIONS.map(opt => (
             <button
