@@ -5,11 +5,10 @@
 
   display: flex;
   align-items: center;
-  gap: 32px;
+  justify-content: space-between;
 
-  padding: 0 24px;
+  padding: 0 32px;
   flex-shrink: 0;
-  z-index: 10;
 }
 
 .navbar-brand {
@@ -35,21 +34,38 @@
   color: var(--accent);
 }
 
-.navbar-center {
-  flex: 1;
-
+.navbar-links {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
+  gap: 8px;
 }
 
+.nav-link {
+  padding: 8px 14px;
 
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
 
-.nav-algo-label {
-  font-size: 14px;
   color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+
+  transition: var(--transition);
 }
 
+.nav-link:hover:not(:disabled) {
+  background: var(--bg-hover);
+  border-color: var(--border);
+  color: var(--text-primary);
+}
 
+.nav-link.active {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.2);
+  color: var(--accent);
+}
 
+.nav-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

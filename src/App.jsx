@@ -298,11 +298,13 @@ export default function App() {
 
   return (
     <div className="app">
-      <Navbar algorithm={algorithm} algoLabel={ALGORITHMS[algorithm].label} />
+      <Navbar
+        algorithm={algorithm}
+        setAlgorithm={setAlgorithm}
+        isRunning={isRunning}
+      />
       <div className="app-body">
         <ControlPanel
-          algorithm={algorithm}
-          setAlgorithm={setAlgorithm}
           arraySize={arraySize}
           setArraySize={handleSizeChange}
           speed={speed}

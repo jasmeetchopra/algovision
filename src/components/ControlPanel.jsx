@@ -1,13 +1,5 @@
 import './ControlPanel.css';
 
-const ALGO_OPTIONS = [
-  { value: 'bubble', label: 'Bubble Sort' },
-  { value: 'insertion', label: 'Insertion Sort' },
-  { value: 'selection', label: 'Selection Sort' },
-  { value: 'merge', label: 'Merge Sort' },
-
-];
-
 export default function ControlPanel({
   algorithm,  setAlgorithm,
   arraySize,  setArraySize,
@@ -21,24 +13,6 @@ export default function ControlPanel({
 }) {
   return (
     <aside className="control-panel">
-      
-
-      <div className="panel-section">
-        <label className="field-label">Select a Sorting Algorithm : </label>
-        <div className="algo-list">
-          {ALGO_OPTIONS.map(opt => (
-            <button
-              key={opt.value}
-              className={`algo-btn ${algorithm === opt.value ? 'active' : ''}`}
-              onClick={() => !isRunning && setAlgorithm(opt.value)}
-              disabled={isRunning}
-            >
-              <span className="algo-btn-dot"></span>
-              {opt.label}
-            </button>
-          ))}
-        </div>
-      </div>
 
       <div className="panel-section">
         <label className="field-label">
