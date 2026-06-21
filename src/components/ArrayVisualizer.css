@@ -11,8 +11,8 @@
   flex: 1;
   display: flex;
   align-items: flex-end;
-  gap: 2px;
-  padding: 24px 24px 0;
+  gap: 3px;
+  padding: 32px 32px 0;
 }
 
 .bar-column {
@@ -27,53 +27,58 @@
 
 .bar-value {
   position: absolute;
-  bottom: calc(100% + 2px);
-  font-size: 8px;
-  color: var(--text-primary);
-  opacity: 0.8;
+  bottom: calc(100% + 6px);
+
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+
   white-space: nowrap;
   pointer-events: none;
 }
 
 .bar {
   width: 100%;
-  border-radius: 2px 2px 0 0;
+  min-height: 3px;
+
+  border-radius: 6px 6px 0 0;
+
   transition:
-    height 0.08s ease-out,
-    background 0.1s ease,
-    box-shadow 0.1s ease;
-  min-height: 2px;
+    height 120ms ease,
+    background-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .bar.comparing {
-  border-radius: 2px 2px 0 0;
-  transform-origin: bottom;
+  transform: translateY(-2px);
 }
 
 .bar.swapping {
-  animation: swapPulse 0.15s ease-in-out;
+  animation: swapPulse 180ms ease;
 }
 
 @keyframes swapPulse {
-  0%   { transform: scaleY(1); }
-  50%  { transform: scaleY(1.05); }
-  100% { transform: scaleY(1); }
+  0% {
+    transform: scaleY(1);
+  }
+
+  50% {
+    transform: scaleY(1.08);
+  }
+
+  100% {
+    transform: scaleY(1);
+  }
 }
 
 .bar.sorted {
-  border-radius: 2px 2px 0 0;
+  opacity: 0.95;
 }
 
 .visualizer-baseline {
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0, 212, 255, 0.3) 20%,
-    rgba(0, 212, 255, 0.5) 50%,
-    rgba(0, 212, 255, 0.3) 80%,
-    transparent 100%
-  );
-  margin: 0 24px;
+  height: 1px;
+  background: var(--border);
+  margin: 0 32px;
   flex-shrink: 0;
 }
