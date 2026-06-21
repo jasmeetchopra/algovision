@@ -2,45 +2,47 @@
 
 :root {
   /* Backgrounds */
-  --bg-primary: #0f172a;
-  --bg-secondary: #111827;
-  --bg-panel: #1e293b;
-  --bg-card: #1f2937;
-  --bg-hover: #273449;
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #121212;
+  --bg-panel: #171717;
+  --bg-card: #1e1e1e;
+  --bg-hover: #262626;
 
   /* Accent Colors */
-  --accent: #3b82f6;
-  --accent-light: #60a5fa;
+  --accent: #f59e0b;
+  --accent-light: #fbbf24;
+
+  /* States */
   --success: #22c55e;
   --warning: #f59e0b;
   --danger: #ef4444;
-  --purple: #8b5cf6;
+  --purple: #a855f7;
 
   /* Sorting Bar Colors */
-  --bar-default: #64748b;
+  --bar-default: #525252;
   --bar-comparing: #f59e0b;
   --bar-swapping: #ef4444;
   --bar-sorted: #22c55e;
-  --bar-pivot: #8b5cf6;
-  --bar-active: #3b82f6;
+  --bar-pivot: #fbbf24;
+  --bar-active: #fbbf24;
 
   /* Text */
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
+  --text-primary: #fafafa;
+  --text-secondary: #d4d4d4;
+  --text-muted: #8a8a8a;
 
   /* Borders & Shadows */
   --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.14);
+  --border-hover: rgba(245, 158, 11, 0.25);
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.15);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.22);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.45);
 
   /* Typography */
   --font-main: 'Inter', sans-serif;
 
   /* Layout */
-  --nav-height: 60px;
+  --nav-height: 64px;
   --panel-width: 320px;
   --transition: 0.2s ease;
 }
@@ -79,12 +81,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #475569;
+  background: #525252;
   border-radius: 8px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
+  background: #737373;
 }
 
 /* Buttons */
@@ -106,7 +108,8 @@ button:active {
 
 /* Inputs */
 select,
-input {
+input,
+textarea {
   font-family: inherit;
   outline: none;
 }
@@ -120,7 +123,7 @@ input[type='range'] {
 
 input[type='range']::-webkit-slider-track {
   height: 6px;
-  background: #334155;
+  background: #2a2a2a;
   border-radius: 999px;
 }
 
@@ -130,6 +133,7 @@ input[type='range']::-webkit-slider-thumb {
   height: 16px;
   border-radius: 50%;
   background: var(--accent);
+  border: 2px solid var(--bg-primary);
   margin-top: -5px;
   transition: var(--transition);
 }
@@ -160,7 +164,7 @@ input[type='range']::-webkit-slider-thumb:hover {
 /* Optional subtle grid for visualizer */
 .grid-bg {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
   background-size: 32px 32px;
 }
