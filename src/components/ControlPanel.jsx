@@ -13,6 +13,27 @@ export default function ControlPanel({
 }) {
   return (
     <aside className="control-panel">
+      <div className="panel-section">
+        <label className="field-label">
+          Custom Array
+        </label>
+
+        <textarea
+          className="custom-array-input"
+          placeholder="5,2,8,1,9,3"
+          value={customInput}
+          onChange={(e) => setCustomInput(e.target.value)}
+          disabled={isRunning}
+        />
+
+        <button
+          className="btn btn-ghost custom-load-btn"
+          onClick={onLoadCustomArray}
+          disabled={isRunning}
+        >
+          Load Array
+        </button>
+      </div>
 
       <div className="panel-section">
         <label className="field-label">
@@ -43,28 +64,6 @@ export default function ControlPanel({
         <div className="slider-ticks">
           <span>slow</span><span>fast</span>
         </div>
-      </div>
-
-      <div className="panel-section">
-        <label className="field-label">
-          Custom Array
-        </label>
-
-        <textarea
-          className="custom-array-input"
-          placeholder="5,2,8,1,9,3"
-          value={customInput}
-          onChange={(e) => setCustomInput(e.target.value)}
-          disabled={isRunning}
-        />
-
-        <button
-          className="btn btn-ghost custom-load-btn"
-          onClick={onLoadCustomArray}
-          disabled={isRunning}
-        >
-          Load Array
-        </button>
       </div>
 
       <div className="panel-section">
@@ -109,25 +108,7 @@ export default function ControlPanel({
         </div>
       </div>
 
-      <div className="complexity-card">
-        <div className="complexity-header">
-          <span className="complexity-title">Complexity</span>
-        </div>
-        <div className="complexity-rows">
-          <div className="complexity-row">
-            <span className="comp-key">Time (avg)</span>
-            <span className="comp-val comp-bad">{complexity.time}</span>
-          </div>
-          <div className="complexity-row">
-            <span className="comp-key">Time (best)</span>
-            <span className="comp-val comp-good">{complexity.best}</span>
-          </div>
-          <div className="complexity-row">
-            <span className="comp-key">Space</span>
-            <span className="comp-val comp-ok">{complexity.space}</span>
-          </div>
-        </div>
-      </div>
+      
 
       <div className="legend">
         <div className="legend-title">Legend</div>
