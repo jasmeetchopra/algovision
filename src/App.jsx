@@ -9,6 +9,7 @@ import { selectionSort } from "./algorithms/sorting/selectionSort";
 import { insertionSort } from "./algorithms/sorting/insertionSort";
 import { mergeSort } from "./algorithms/sorting/mergeSort";
 import MergeTreeVisualizer from './components/MergeTreeVisualizer';
+import { Analytics } from "@vercel/analytics/next"
 
 
 const ALGORITHMS = {
