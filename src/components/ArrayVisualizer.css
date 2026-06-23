@@ -7,6 +7,10 @@
   background: var(--bg-primary);
 }
 
+/* ===========================
+   NORMAL MODE (UNCHANGED)
+   =========================== */
+
 .visualizer-bars {
   flex: 1;
   display: flex;
@@ -25,22 +29,9 @@
   position: relative;
 }
 
-.bar-value {
-  position: absolute;
-  bottom: calc(100% + 6px);
-
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-secondary);
-
-  white-space: nowrap;
-  pointer-events: none;
-}
-
 .bar {
   width: 100%;
   min-height: 3px;
-
   border-radius: 6px 6px 0 0;
 
   transition:
@@ -50,12 +41,94 @@
     box-shadow 150ms ease;
 }
 
-.bar.comparing {
+.visualizer-baseline-bottom {
+  height: 1px;
+  background: var(--border);
+  margin: 0 32px;
+  flex-shrink: 0;
+}
+
+/* ===========================
+   NEGATIVE MODE
+   =========================== */
+
+.visualizer-bars-negative {
+  flex: 1;
+  display: flex;
+  gap: 3px;
+  padding: 32px;
+  position: relative;
+}
+
+.bar-column-negative {
+  flex: 1;
+  position: relative;
+  height: 100%;
+}
+
+.bar-negative {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  min-height: 3px;
+  transition:
+    height 120ms ease,
+    background-color 150ms ease,
+    transform 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.bar-negative.positive {
+  bottom: 50%;
+  border-radius: 6px 6px 0 0;
+}
+
+.bar-negative.negative {
+  top: 50%;
+  border-radius: 0 0 6px 6px;
+}
+
+.visualizer-baseline-middle {
+  position: absolute;
+  left: 32px;
+  right: 32px;
+  top: 50%;
+  height: 1px;
+  background: var(--border);
+  pointer-events: none;
+}
+
+/* ===========================
+   COMMON
+   =========================== */
+
+.bar-value {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.bar.comparing,
+.bar-negative.comparing {
   transform: translateY(-2px);
 }
 
-.bar.swapping {
+.bar.swapping,
+.bar-negative.swapping {
   animation: swapPulse 180ms ease;
+}
+
+.bar.sorted,
+.bar-negative.sorted {
+  opacity: 0.95;
 }
 
 @keyframes swapPulse {
@@ -70,15 +143,4 @@
   100% {
     transform: scaleY(1);
   }
-}
-
-.bar.sorted {
-  opacity: 0.95;
-}
-
-.visualizer-baseline {
-  height: 1px;
-  background: var(--border);
-  margin: 0 32px;
-  flex-shrink: 0;
 }

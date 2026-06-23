@@ -264,7 +264,7 @@ export default function App() {
     resetMergeTree();
     if (isRunning) return;
     const values = customInput
-      .split(/[\s,]+/)
+      .split(/[\s,/]+/)
       .map(Number)
       .filter(v => !isNaN(v));
 
